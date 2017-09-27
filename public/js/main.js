@@ -1,0 +1,204 @@
+var tempoInicial = $('#tempo-restante').text();
+/* Armazenando frase */
+var frase = $('.frase').text();
+/* Armazenando elemento textarea campo de digitacao */
+var campoDigitacao = $('.campo-digitacao');
+/* Armazenando botão reniciar */
+var botaoReiniciar = $('#botao-reiniciar');
+
+/* Iniciando funções assim que a página termina de carregar */
+$(function(){
+
+    atualizaTamanhoFrase();
+    inicializaCronometro();
+    atualizaContadores();
+    inicializaValidadores();
+
+    /* Reiniciando o jogo quando clicar no botão */
+    botaoReiniciar.click(reiniciaJogo);
+
+});
+
+/* Função para pegar o tamanho da frase a ser digitada */
+function atualizaTamanhoFrase() {
+
+    /* Armazenando numero de palavras da frase */
+    var numPalavras = frase.split(/[\S\.]+/).length - 1;
+    /* Alterando contador de palavras da frase  */
+    $('#tamanho-frase').text(numPalavras);
+
+}
+
+/* Função para atualizar contadores de caracteres e palavras */
+function atualizaContadores() {
+
+    /* Ouvindo evento de input no campo de digitacao */
+    campoDigitacao.on('input', function() {
+
+        /* Armazenando valor do campo */
+        var digitado = campoDigitacao.val();
+        /* Retornando quantidade de palavras digitadas */
+        var qtdPalavras = digitado.split(/\S+/).length - 1;
+        /* Retornando quantidade de caracteres digitados */
+        var qtdCaracteres = digitado.length;
+
+        /* Atualizando contador de caracteres */
+        $('#contador-caracteres').text(qtdCaracteres);
+        /* Atualizando contador de palavras */
+        $('#contador-palavras').text(qtdPalavras);
+
+    });
+
+}
+
+/*
+ * Criando evento para fazer a contagem regressiva assim que
+ * o usuário clicar no campo de digitação
+ */
+function inicializaCronometro() {
+
+    /* Armazenando o span do tempo restante */
+    var tempoRestante = $('#tempo-restante').text();
+
+    campoDigitacao.one('input', function() {
+
+        /* Desabilitando botão reiniciar */
+        botaoReiniciar.attr('disabled', true);
+        /* Armazenando ID do setInterval() para poder parar a
+        * contagem assim que a variável tempoRestante for igual a 0
+        * com a função clearInterval()
+        */
+        var contagemRegressivaID = setInterval(function() {
+
+            /* Decrementando a variável tempoRestante */
+            tempoRestante--;
+            /* Atualizando o tempo dentro do span */
+            $('#tempo-restante').text(tempoRestante);
+
+            /*
+            * Se tempoRestante for = 0 então a contagem e parada
+            * e o campo de digitação é desabilitado
+            */
+            if(tempoRestante == 0) {
+
+                /* Parando contagem */
+                clearInterval(contagemRegressivaID);
+
+                /* Finalizando jogo */
+                finalizarJogo();
+
+                /* Insere novo linha com o nome e pontução do jogador */
+                inserirNovaLinha();
+
+            }
+        }, 1000);
+
+    });
+
+}
+
+/* Função para mudar a cor da borda caso esteja correto ou incorreto */
+function inicializaValidadores() {
+
+    campoDigitacao.on('input', function(){
+
+        /* Armazenando o que foi digitado */
+        var digitado = campoDigitacao.val();
+        /* Comparando o que foi digitado com a frase */
+        var comparado = frase.substr(0, digitado.length);
+
+        /* Verificando a comparação e adicionando classes */
+        if (comparado == digitado) {
+            campoDigitacao.removeClass('campo-invalido');
+            campoDigitacao.addClass('campo-correto');
+        } else {
+            campoDigitacao.removeClass('campo-correto');
+            campoDigitacao.addClass('campo-invalido');
+        }
+
+    });
+
+}
+
+/**
+ * Função para finalizar o jogo
+ */
+function finalizarJogo() {
+
+    desabilitarCampoDigitacao(true);
+
+    $('.placar').focus();
+
+    /* Desabilitando botão reiniciar */
+    botaoReiniciar.attr('disabled', false);
+
+}
+
+/**
+ * Função para desabilitar o campo de digitação
+ *
+ * @param  {boolean} acao recebe o tipo de ação se true desabilita o
+ * campo, se false habilita o campo e limpa o que foi digitado
+ */
+function desabilitarCampoDigitacao(acao) {
+
+    /* Verificando o tipo da desabilitação */
+    if (acao == true) {
+
+        /* Desabilitando o campo */
+        campoDigitacao.attr('disabled', true);
+
+    } else {
+
+        /* Habilitando o campo */
+        campoDigitacao.attr('disabled', false);
+        /* Limpando o campo */
+        campoDigitacao.val('');
+
+    }
+
+    /* Alternando classe 'campo-desativado' */
+    campoDigitacao.toggleClass('campo-desativado');
+
+    /* Removendo classes de validação */
+    campoDigitacao.removeClass('campo-correto');
+    campoDigitacao.removeClass('campo-invalido');
+
+}
+
+/**
+ * Reinicia game zerando campos de digitação e contadores
+ * de caracteres e palavras e reiniciando cronometro
+ */
+function reiniciaJogo() {
+
+    if (campoDigitacao.attr('disabled') == 'disabled') {
+
+        /* Zerando contador de caracteres */
+        $('#contador-caracteres').text('0');
+        /* Zerando contador de palavras */
+        $('#contador-palavras').text('0');
+        /* Colocando tempo inicial */
+        $('#tempo-restante').text(tempoInicial);
+
+        desabilitarCampoDigitacao(false);
+
+        /* Reiniciando cronomêtro */
+        inicializaCronometro();
+
+    }
+
+    /**
+     * Resolvendo bug =============================================
+     * Pelo botão estar em um link que redireciona para o topo do
+     * site o campo de digitação não dava foco porque o link
+     * ficava executando o scroll para o topo ao mesmo tempo,
+     * então o JS espera 100ms para executar o foco para o textarea
+     * depois que o link é clicado
+     */
+    setTimeout(function(){
+        /* Dando foco no campo de digitação novamente */
+        campoDigitacao.focus();
+    }, 100);
+
+}
