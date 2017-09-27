@@ -1,10 +1,15 @@
+var placar = $('.placar');
+
+/* Mostra o placar quando clicado */
+$('#botao-placar').click(mostrarPlacar);
+
 /**
  * Insere novo elemento na tabela
  */
 function inserirNovaLinha() {
 
     /* Armazenando o tbody da tabela */
-    var placar = $('.placar').find('tbody');
+    var placarBody = placar.find('tbody');
 
     /* Armazenando nome e pontuação do jogador */
     var nomeJogador = 'Rodrigo';
@@ -17,7 +22,12 @@ function inserirNovaLinha() {
     novaLinha.find('#botao-remover').click(excluirElemento);
 
     /* Atribuindo objeto como primeiro filho do tbody */
-    placar.prepend(novaLinha);
+    placarBody.prepend(novaLinha);
+
+    /* Mostrando placar */
+    placar.slideDown(600);
+
+    scrollTo(placar, 1000);
 
 }
 
@@ -44,7 +54,7 @@ function criarNovaLinha(jogador, pontuacao) {
     /* Criando botão de remover */
     var botaoRemover = $('<button>').attr('id', 'botao-remover');
     /* Criando icone da lixeira */
-    var iconeRemover = $('<i>').addClass('small material-icons').text('delete_forever');
+    var iconeRemover = $('<i>').addClass('small material-icons').text('cancel');
 
     /* Atribuindo icone remover como filho do botão remover */
     botaoRemover.append(iconeRemover);
@@ -52,6 +62,8 @@ function criarNovaLinha(jogador, pontuacao) {
     colunaBotao.append(botaoRemover);
     /* Atribuindo colunas a linha principal */
     linhaPlacar.append(colunaNome, colunaPontos, colunaBotao);
+
+    linhaPlacar.mousemove()
 
     /* Retornando o novo objeto criado */
     return linhaPlacar;
@@ -64,8 +76,24 @@ function criarNovaLinha(jogador, pontuacao) {
 function excluirElemento() {
 
     /* Captura o elemento que foi clicado e exclui o seu parente avôs */
-    $(this).parent().parent().remove();
+    $this = $(this).parent().parent();
+
+    /* Adiciona classe 'fade-out' e executa o metodo fadeOut() */
+    $this.addClass('fade-out').fadeOut(1000);
+
+    /* Aguarda o fadeOut() terminar para excluir o elemento */
+    setTimeout(function() {
+        $this.remove();
+    }, 1000);
 
 }
 
-/* Teste */
+/**
+ * Função para mostrar o placar
+ */
+function mostrarPlacar() {
+
+    /* Para qualquer animação que esteja em execução e começa a slideToggle() */
+    placar.stop().slideToggle(600);
+
+}

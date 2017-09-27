@@ -1,3 +1,4 @@
+/* Armazenando tempo padrão */
 var tempoInicial = $('#tempo-restante').text();
 /* Armazenando frase */
 var frase = $('.frase').text();
@@ -125,7 +126,7 @@ function inicializaValidadores() {
  */
 function finalizarJogo() {
 
-    desabilitarCampoDigitacao(true);
+    toggleCampoDigitacao(true);
 
     $('.placar').focus();
 
@@ -140,7 +141,7 @@ function finalizarJogo() {
  * @param  {boolean} acao recebe o tipo de ação se true desabilita o
  * campo, se false habilita o campo e limpa o que foi digitado
  */
-function desabilitarCampoDigitacao(acao) {
+function toggleCampoDigitacao(acao) {
 
     /* Verificando o tipo da desabilitação */
     if (acao == true) {
@@ -181,7 +182,8 @@ function reiniciaJogo() {
         /* Colocando tempo inicial */
         $('#tempo-restante').text(tempoInicial);
 
-        desabilitarCampoDigitacao(false);
+        /* Desabilitando o campo de digitação */
+        toggleCampoDigitacao(false);
 
         /* Reiniciando cronomêtro */
         inicializaCronometro();
@@ -200,5 +202,31 @@ function reiniciaJogo() {
         /* Dando foco no campo de digitação novamente */
         campoDigitacao.focus();
     }, 100);
+
+    /* Fazendo o scroll para o topo */
+    scrollTo($('.jogo'), 200);
+
+}
+
+/**
+ * Função para fazer o scroll para o elemento recebido
+ * @param  {object} elemento Recebe o elemento desejado
+ * @param  {number} tempo    Recebe o tempo de execução
+ */
+function scrollTo(elemento, tempo) {
+
+    /* Armazenando a posição do elemento recebido */
+    var posicao = elemento.offset().top;
+
+    /**
+     * Animando o body para scrollar para a posição do elemento
+     * recebido. Deve ser selecionado com o $() tanto o 'HTML'
+     * quanto o 'BODY' pois só funcionará dessa maneira, mas
+     * nos meus testes somente selecionar o 'HTML' também funciona
+     */
+    $('html, body').animate({
+        /* Executanto o scroll */
+        scrollTop: posicao + 'px'
+    }, tempo);
 
 }

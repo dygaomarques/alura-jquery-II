@@ -1,36 +1,62 @@
-body {
-    font-size: 16px;
-}
+/* Definindo tamanho padrão da fonte do projeto */
+body { font-size: 16px; }
+
+/* Fixando o margin top geral */
+.jogo { padding-top: 2.1em; }
+.jogo h1 { margin-top: 0; }
+
+/* Alinhando o texto a esquerda */
 .frase {
     text-align: left;
 }
+
+/* Defininido os estilos do campo de digitação */
 .campo-digitacao {
     height: 130px;
     border: 3px solid black;
     transition: ease-in-out 200ms;
 }
+/* Definindo estilo do campo de digitação quando desativado */
 .campo-desativado {
     background: #DCE0E9;
     color: #BBBBBBB;
 }
+/* Definindo bordas que indicam a validação */
 .campo-correto { border-color: green; }
 .campo-invalido { border-color: red; }
 
+/* Alinhando icones ao centro */
 .informacoes li .material-icons {
     vertical-align: middle;
 }
 
+/* Escondendo placar inicialmente */
+.placar { display: none; }
+
+/* Estilizando botão de excluir */
 .placar button {
     border: none;
     background: none;
 }
-
 .placar button i {
     vertical-align: middle;
     transition: 300ms;
 }
-
+/* Estilizando hover do botão de excluir */
 .placar button i:hover {
     color: red;
-    transform: scale(1.2, 1.2);
+    transform: scale(1.1, 1.1);
 }
+
+/* Adicionando transição suave a TR */
+.placar tr { opacity: 1; transition: 100ms; }
+
+/* Mudando a TR de cor quando a mesma passa a ter a classe .fade-out */
+.placar .fade-out {
+    height: 0;
+    background: red;
+    color: white !important;
+    opacity: 0;
+}
+/* Mantendo a cor do icone branco mesmo com o hover na hora de excluir */
+.placar .fade-out button i:hover { color: white; }
