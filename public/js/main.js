@@ -1,11 +1,13 @@
 /* Armazenando tempo padrão */
 var tempoInicial = $('#tempo-restante').text();
 /* Armazenando frase */
-var frase = $('.frase').text();
+var frase = $('.frase');
 /* Armazenando elemento textarea campo de digitacao */
 var campoDigitacao = $('.campo-digitacao');
 /* Armazenando botão reniciar */
 var botaoReiniciar = $('#botao-reiniciar');
+/* Armazenando botão shuffle */
+var botaoShuffle = $('#botao-shuffle');
 
 /* Iniciando funções assim que a página termina de carregar */
 $(function(){
@@ -24,9 +26,22 @@ $(function(){
 function atualizaTamanhoFrase() {
 
     /* Armazenando numero de palavras da frase */
-    var numPalavras = frase.split(/[\S\.]+/).length - 1;
+    var numPalavras = frase.text().split(/[\S\.]+/).length - 1;
     /* Alterando contador de palavras da frase  */
     $('#tamanho-frase').text(numPalavras);
+
+}
+
+/**
+ * Função para atualizar o tempo inicial de cada rodada
+ */
+function atualizaTempoInicial(tempo) {
+
+    /* Aterando valor da variável */
+    tempoInicial = tempo;
+    /* Atualizando tempo no elemento */
+    $('#tempo-restante').text(tempoInicial);
+    console.log($('#tempo-restante').text());
 
 }
 
@@ -58,13 +73,16 @@ function atualizaContadores() {
  */
 function inicializaCronometro() {
 
-    /* Armazenando o span do tempo restante */
-    var tempoRestante = $('#tempo-restante').text();
-
     campoDigitacao.one('input', function() {
+
+        /* Armazenando o span do tempo restante */
+        var tempoRestante = tempoInicial;
 
         /* Desabilitando botão reiniciar */
         botaoReiniciar.attr('disabled', true);
+        /* Desabilitando botão shuffle */
+        botaoShuffle.attr('disabled', true);
+
         /* Armazenando ID do setInterval() para poder parar a
         * contagem assim que a variável tempoRestante for igual a 0
         * com a função clearInterval()
@@ -106,7 +124,7 @@ function inicializaValidadores() {
         /* Armazenando o que foi digitado */
         var digitado = campoDigitacao.val();
         /* Comparando o que foi digitado com a frase */
-        var comparado = frase.substr(0, digitado.length);
+        var comparado = frase.text().substr(0, digitado.length);
 
         /* Verificando a comparação e adicionando classes */
         if (comparado == digitado) {
@@ -130,8 +148,10 @@ function finalizarJogo() {
 
     $('.placar').focus();
 
-    /* Desabilitando botão reiniciar */
+    /* Habilitando botão reiniciar */
     botaoReiniciar.attr('disabled', false);
+    /* Habilitando botão shuffle */
+    botaoShuffle.attr('disabled', false);
 
 }
 

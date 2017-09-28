@@ -27,6 +27,7 @@ function inserirNovaLinha() {
     /* Mostrando placar */
     placar.slideDown(600);
 
+    /* Fazendo scroll para o placar */
     scrollTo(placar, 1000);
 
 }
