@@ -39,6 +39,11 @@ body { font-size: 16px; }
     vertical-align: middle;
 }
 
+#frase-id {
+    width: 40px;
+    margin-left: .5em;
+}
+
 /* Escondendo placar inicialmente */
 .placar { display: none; }
 

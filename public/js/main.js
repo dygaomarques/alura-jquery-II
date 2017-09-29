@@ -8,6 +8,8 @@ var campoDigitacao = $('.campo-digitacao');
 var botaoReiniciar = $('#botao-reiniciar');
 /* Armazenando botão shuffle */
 var botaoShuffle = $('#botao-shuffle');
+/* Armazenando botão busca */
+var botaoBusca = $('#botao-busca');
 
 /* Iniciando funções assim que a página termina de carregar */
 $(function(){
@@ -41,7 +43,6 @@ function atualizaTempoInicial(tempo) {
     tempoInicial = tempo;
     /* Atualizando tempo no elemento */
     $('#tempo-restante').text(tempoInicial);
-    console.log($('#tempo-restante').text());
 
 }
 
