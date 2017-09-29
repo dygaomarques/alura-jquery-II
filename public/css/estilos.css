@@ -25,6 +25,15 @@ body { font-size: 16px; }
 .campo-correto { border-color: green; }
 .campo-invalido { border-color: red; }
 
+/* Escondendo mensagem de erro */
+#erro {
+    display: none;
+    color: red;
+}
+
+/* Escondendo spinner */
+#spinner { display: none; }
+
 /* Alinhando icones ao centro */
 .informacoes li .material-icons {
     vertical-align: middle;
