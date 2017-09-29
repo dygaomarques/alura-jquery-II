@@ -10,6 +10,9 @@ var botaoReiniciar = $('#botao-reiniciar');
 var botaoShuffle = $('#botao-shuffle');
 /* Armazenando botão busca */
 var botaoBusca = $('#botao-busca');
+/* Armazenando input busca */
+var inputBusca = $('#frase-id');
+
 
 /* Iniciando funções assim que a página termina de carregar */
 $(function(){
@@ -24,6 +27,7 @@ $(function(){
 
 });
 
+
 /* Função para pegar o tamanho da frase a ser digitada */
 function atualizaTamanhoFrase() {
 
@@ -33,6 +37,7 @@ function atualizaTamanhoFrase() {
     $('#tamanho-frase').text(numPalavras);
 
 }
+
 
 /**
  * Função para atualizar o tempo inicial de cada rodada
@@ -45,6 +50,7 @@ function atualizaTempoInicial(tempo) {
     $('#tempo-restante').text(tempoInicial);
 
 }
+
 
 /* Função para atualizar contadores de caracteres e palavras */
 function atualizaContadores() {
@@ -68,6 +74,7 @@ function atualizaContadores() {
 
 }
 
+
 /*
  * Criando evento para fazer a contagem regressiva assim que
  * o usuário clicar no campo de digitação
@@ -79,10 +86,8 @@ function inicializaCronometro() {
         /* Armazenando o span do tempo restante */
         var tempoRestante = tempoInicial;
 
-        /* Desabilitando botão reiniciar */
-        botaoReiniciar.attr('disabled', true);
-        /* Desabilitando botão shuffle */
-        botaoShuffle.attr('disabled', true);
+        /* Desabilitando botões de ação */
+        toggleDesabilitaBotoes(true);
 
         /* Armazenando ID do setInterval() para poder parar a
         * contagem assim que a variável tempoRestante for igual a 0
@@ -117,6 +122,7 @@ function inicializaCronometro() {
 
 }
 
+
 /* Função para mudar a cor da borda caso esteja correto ou incorreto */
 function inicializaValidadores() {
 
@@ -140,6 +146,7 @@ function inicializaValidadores() {
 
 }
 
+
 /**
  * Função para finalizar o jogo
  */
@@ -149,12 +156,11 @@ function finalizarJogo() {
 
     $('.placar').focus();
 
-    /* Habilitando botão reiniciar */
-    botaoReiniciar.attr('disabled', false);
-    /* Habilitando botão shuffle */
-    botaoShuffle.attr('disabled', false);
+    /* Habilitando botões de ação */
+    toggleDesabilitaBotoes(false);
 
 }
+
 
 /**
  * Função para desabilitar o campo de digitação
@@ -187,6 +193,41 @@ function toggleCampoDigitacao(acao) {
     campoDigitacao.removeClass('campo-invalido');
 
 }
+
+
+/**
+ * Função para desabilitar/habilitar botões de ação
+ *
+ * @param  {boolean} acao Recebe o tipo de ação
+ */
+function toggleDesabilitaBotoes(acao) {
+
+    if (acao == true) {
+
+        /* Desabilitando botão reiniciar */
+        botaoReiniciar.attr('disabled', true);
+        /* Desabilitando botão shuffle */
+        botaoShuffle.attr('disabled', true);
+        /* Desabilitando botão busca */
+        botaoBusca.attr('disabled', true);
+        /* Desabilitando input busca */
+        inputBusca.attr('disabled', true);
+
+    } else {
+
+        /* Habilitando botão reiniciar */
+        botaoReiniciar.attr('disabled', false);
+        /* Habilitando botão shuffle */
+        botaoShuffle.attr('disabled', false);
+        /* Habilitando botão busca */
+        botaoBusca.attr('disabled', false);
+        /* Habilitando input busca */
+        inputBusca.attr('disabled', false);
+
+    }
+
+}
+
 
 /**
  * Reinicia game zerando campos de digitação e contadores
@@ -228,6 +269,7 @@ function reiniciaJogo() {
     scrollTo($('.jogo'), 200);
 
 }
+
 
 /**
  * Função para fazer o scroll para o elemento recebido

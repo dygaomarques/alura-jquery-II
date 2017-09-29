@@ -8,7 +8,7 @@ botaoBusca.click(buscaFrase);
  * Caso o usuário venha a pressionar o ENTER depois de
  * escolher o id da frase chama a função buscaFrase()
  */
-$('#frase-id').keypress(function(event){
+inputBusca.keypress(function(event){
     if (event.which == 13) {
         buscaFrase();
     }
